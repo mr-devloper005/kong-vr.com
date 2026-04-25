@@ -3,8 +3,10 @@
 import { useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Plus, Save } from "lucide-react";
+import { ArrowLeft, Image as ImageIcon, Plus, Save, Sparkles } from "lucide-react";
 import { NavbarShell } from "@/components/shared/navbar-shell";
+import { Footer } from "@/components/shared/footer";
+import { ContentImage } from "@/components/shared/content-image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -122,7 +124,7 @@ const FORM_CONFIG: Record<TaskKey, { title: string; description: string; fields:
     fields: [
       { key: "title", label: "Bookmark title", type: "text", required: true },
       { key: "summary", label: "Short summary", type: "textarea", required: true },
-      { key: "description", label: "Why it’s useful", type: "textarea" },
+      { key: "description", label: "Why it's useful", type: "textarea" },
       { key: "website", label: "Target URL", type: "url", required: true },
       { key: "category", label: "Category", type: "category" },
       { key: "tags", label: "Tags", type: "tags" },
@@ -182,17 +184,18 @@ export default function CreateTaskPage() {
 
   if (!taskConfig || !formConfig) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#ecf2f7]">
         <NavbarShell />
         <main className="mx-auto max-w-3xl px-4 py-16 text-center">
-          <h1 className="text-2xl font-semibold text-foreground">Task not available</h1>
-          <p className="mt-2 text-muted-foreground">
+          <h1 className="text-2xl font-semibold text-[#15232e]">Task not available</h1>
+          <p className="mt-2 text-[#5c7181]">
             This task is not enabled for the current site.
           </p>
-          <Button className="mt-6" asChild>
+          <Button className="mt-6 rounded-full bg-[#123e60] hover:bg-[#0f324f]" asChild>
             <Link href="/">Back home</Link>
           </Button>
         </main>
+        <Footer />
       </div>
     );
   }
@@ -271,124 +274,165 @@ export default function CreateTaskPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#ecf2f7] text-[#15232e]">
       <NavbarShell />
-      <main className="mx-auto max-w-4xl px-4 py-12">
-        <div className="mb-8 flex items-center gap-3">
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/">
-              <ArrowLeft className="h-5 w-5" />
-            </Link>
-          </Button>
-          <div>
-            <h1 className="text-2xl font-semibold text-foreground">{formConfig.title}</h1>
-            <p className="text-sm text-muted-foreground">{formConfig.description}</p>
-          </div>
-        </div>
+      <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <section className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
+          <aside className="overflow-hidden rounded-[2rem] border border-[#ccdae7] bg-white shadow-[0_24px_60px_rgba(10,33,51,0.08)]">
+            <div className="relative h-56">
+              <ContentImage
+                src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80"
+                alt="Create content hero"
+                fill
+                className="object-cover"
+                priority
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(9,24,40,0.20)_0%,rgba(9,24,40,0.60)_100%)]" />
+              <p className="absolute bottom-5 left-5 text-sm font-semibold uppercase tracking-[0.18em] text-white/90">
+                Create and publish
+              </p>
+            </div>
+            <div className="p-8">
+              <div className="flex items-center gap-2">
+                <Badge className="rounded-full bg-[#e5f2fd] text-[#1c5f93] hover:bg-[#d5eafe]">{taskConfig.label}</Badge>
+                <Badge variant="outline" className="rounded-full border-[#c7d8e7] text-[#5b7182]">Local-only</Badge>
+              </div>
+              <h1 className="mt-4 text-4xl font-semibold tracking-[-0.05em]">{formConfig.title}</h1>
+              <p className="mt-4 text-sm leading-8 text-[#516473]">{formConfig.description}</p>
+              <div className="mt-6 grid gap-3">
+                {[
+                  "Use clear titles and summaries for better discoverability.",
+                  "Add image URLs separated by commas for quick galleries.",
+                  "Save locally and preview instantly before publishing wider.",
+                ].map((tip) => (
+                  <div key={tip} className="rounded-xl border border-[#d5e3ee] bg-[#f5faff] px-4 py-3 text-sm text-[#284253]">
+                    {tip}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </aside>
 
-        <div className="rounded-3xl border border-border bg-card p-8 shadow-sm">
-          <div className="flex flex-wrap gap-2">
-            <Badge variant="secondary">{taskConfig.label}</Badge>
-            <Badge variant="outline">Local-only</Badge>
-          </div>
+          <section className="rounded-[2rem] border border-[#ccdae7] bg-white p-8 shadow-[0_24px_60px_rgba(10,33,51,0.08)]">
+            <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <Button variant="ghost" size="icon" asChild className="rounded-full border border-[#d4e2ed] bg-[#f8fbff] text-[#1f3240] hover:bg-[#edf5fd]">
+                  <Link href="/">
+                    <ArrowLeft className="h-5 w-5" />
+                  </Link>
+                </Button>
+                <p className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.2em] text-[#617586]">
+                  <Sparkles className="h-4 w-4 text-[#2b82c7]" />
+                  Create content
+                </p>
+              </div>
+              <Link href={taskConfig.route} className="inline-flex items-center gap-2 rounded-full border border-[#d1dfeb] bg-[#f4f9ff] px-4 py-2 text-sm font-semibold text-[#234152] hover:bg-[#e9f3fc]">
+                <ImageIcon className="h-4 w-4" />
+                View {taskConfig.label}
+              </Link>
+            </div>
 
-          <div className="mt-6 grid gap-6">
-            {formConfig.fields.map((field) => (
-              <div key={field.key} className="grid gap-2">
-                <Label>
-                  {field.label} {field.required ? <span className="text-red-500">*</span> : null}
-                </Label>
-                {field.type === "textarea" ? (
-                  <Textarea
-                    rows={4}
-                    placeholder={field.placeholder}
-                    value={values[field.key] || ""}
-                    onChange={(event) => updateValue(field.key, event.target.value)}
-                    className="border-2 border-slate-200 bg-white focus-visible:ring-2 focus-visible:ring-primary/30"
-                  />
-                ) : field.type === "category" ? (
-                  <select
-                    value={values[field.key] || ""}
-                    onChange={(event) => updateValue(field.key, event.target.value)}
-                    className="h-11 rounded-lg border-2 border-slate-200 bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
-                  >
-                    <option value="">Select category</option>
-                    {CATEGORY_OPTIONS.map((option) => (
-                      <option key={option.slug} value={option.slug}>
-                        {option.name}
-                      </option>
-                    ))}
-                  </select>
-                ) : field.type === "file" ? (
-                  <div className="grid gap-3">
-                    <Input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={(event) => {
-                        const file = event.target.files?.[0];
-                        if (!file) return;
-                        if (file.type !== "application/pdf") {
-                          toast({
-                            title: "Invalid file",
-                            description: "Please upload a PDF file.",
-                          });
-                          return;
-                        }
-                        const reader = new FileReader();
-                        setUploadingPdf(true);
-                        reader.onload = () => {
-                          const result = typeof reader.result === "string" ? reader.result : "";
-                          updateValue(field.key, result);
-                          setUploadingPdf(false);
-                          toast({
-                            title: "PDF uploaded",
-                            description: "File is stored locally.",
-                          });
-                        };
-                        reader.readAsDataURL(file);
-                      }}
-                    />
-                    <Input
-                      type="text"
-                      placeholder="Or paste a PDF URL"
+            <div className="grid gap-6">
+              {formConfig.fields.map((field) => (
+                <div key={field.key} className="grid gap-2">
+                  <Label className="text-[#243746]">
+                    {field.label} {field.required ? <span className="text-red-500">*</span> : null}
+                  </Label>
+                  {field.type === "textarea" ? (
+                    <Textarea
+                      rows={4}
+                      placeholder={field.placeholder}
                       value={values[field.key] || ""}
                       onChange={(event) => updateValue(field.key, event.target.value)}
+                      className="border border-[#cfdeea] bg-[#f8fbff] focus-visible:ring-2 focus-visible:ring-[#8eb8db]"
                     />
-                    {uploadingPdf ? (
-                      <p className="text-xs text-muted-foreground">Uploading PDF…</p>
-                    ) : null}
-                  </div>
-                ) : (
-                  <Input
-                    type={field.type === "number" ? "number" : "text"}
-                    placeholder={
-                      field.type === "images" || field.type === "tags" || field.type === "highlights"
-                        ? "Separate values with commas"
-                        : field.placeholder
-                    }
-                    value={values[field.key] || ""}
-                    onChange={(event) => updateValue(field.key, event.target.value)}
-                    className="h-11 border-2 border-slate-200 bg-white focus-visible:ring-2 focus-visible:ring-primary/30"
-                  />
-                )}
-              </div>
-            ))}
-          </div>
+                  ) : field.type === "category" ? (
+                    <select
+                      value={values[field.key] || ""}
+                      onChange={(event) => updateValue(field.key, event.target.value)}
+                      className="h-11 rounded-lg border border-[#cfdeea] bg-[#f8fbff] px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8eb8db]"
+                    >
+                      <option value="">Select category</option>
+                      {CATEGORY_OPTIONS.map((option) => (
+                        <option key={option.slug} value={option.slug}>
+                          {option.name}
+                        </option>
+                      ))}
+                    </select>
+                  ) : field.type === "file" ? (
+                    <div className="grid gap-3">
+                      <Input
+                        type="file"
+                        accept="application/pdf"
+                        onChange={(event) => {
+                          const file = event.target.files?.[0];
+                          if (!file) return;
+                          if (file.type !== "application/pdf") {
+                            toast({
+                              title: "Invalid file",
+                              description: "Please upload a PDF file.",
+                            });
+                            return;
+                          }
+                          const reader = new FileReader();
+                          setUploadingPdf(true);
+                          reader.onload = () => {
+                            const result = typeof reader.result === "string" ? reader.result : "";
+                            updateValue(field.key, result);
+                            setUploadingPdf(false);
+                            toast({
+                              title: "PDF uploaded",
+                              description: "File is stored locally.",
+                            });
+                          };
+                          reader.readAsDataURL(file);
+                        }}
+                        className="h-11 border border-[#cfdeea] bg-[#f8fbff]"
+                      />
+                      <Input
+                        type="text"
+                        placeholder="Or paste a PDF URL"
+                        value={values[field.key] || ""}
+                        onChange={(event) => updateValue(field.key, event.target.value)}
+                        className="h-11 border border-[#cfdeea] bg-[#f8fbff]"
+                      />
+                      {uploadingPdf ? (
+                        <p className="text-xs text-[#5f7383]">Uploading PDF...</p>
+                      ) : null}
+                    </div>
+                  ) : (
+                    <Input
+                      type={field.type === "number" ? "number" : "text"}
+                      placeholder={
+                        field.type === "images" || field.type === "tags" || field.type === "highlights"
+                          ? "Separate values with commas"
+                          : field.placeholder
+                      }
+                      value={values[field.key] || ""}
+                      onChange={(event) => updateValue(field.key, event.target.value)}
+                      className="h-11 border border-[#cfdeea] bg-[#f8fbff] focus-visible:ring-2 focus-visible:ring-[#8eb8db]"
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button onClick={handleSubmit}>
-              <Save className="mr-2 h-4 w-4" />
-              Save locally
-            </Button>
-            <Button variant="ghost" asChild>
-              <Link href={taskConfig.route}>
-                View {taskConfig.label}
-                <Plus className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-        </div>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button onClick={handleSubmit} className="rounded-full bg-[#123e60] px-5 hover:bg-[#0f324f]">
+                <Save className="mr-2 h-4 w-4" />
+                Save locally
+              </Button>
+              <Button variant="ghost" asChild className="rounded-full border border-[#cfdeea] bg-[#f4f9ff] text-[#1e3445] hover:bg-[#e8f3fb]">
+                <Link href={taskConfig.route}>
+                  View {taskConfig.label}
+                  <Plus className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+          </section>
+        </section>
       </main>
+      <Footer />
     </div>
   );
 }

@@ -1,93 +1,134 @@
-import Link from "next/link";
-import { PageShell } from "@/components/shared/page-shell";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { mockTeamMembers } from "@/data/mock-data";
-import { SITE_CONFIG } from "@/lib/site-config";
+import Link from 'next/link'
+import { Camera, Globe2, ShieldCheck, Sparkles, Users, Video } from 'lucide-react'
+import { NavbarShell } from '@/components/shared/navbar-shell'
+import { Footer } from '@/components/shared/footer'
+import { ContentImage } from '@/components/shared/content-image'
+import { SITE_CONFIG } from '@/lib/site-config'
 
-const highlights = [
-  { label: "Creators onboarded", value: "12k+" },
-  { label: "Bookmarks shared", value: "180k" },
-  { label: "Listings published", value: "8.6k" },
-];
-
-const values = [
-  { title: "Curated by people", description: "We believe trusted recommendations beat endless feeds." },
-  { title: "Designed for focus", description: "Clear, calm UI helps you find the next best resource fast." },
-  { title: "Built to share", description: "Collections make collaboration and knowledge flow effortless." },
-];
+const pillars = [
+  {
+    title: 'Visual-first publishing',
+    body: 'Every layout is built to showcase photography and video, not hide it inside dense widgets.',
+    icon: Camera,
+  },
+  {
+    title: 'Ownership and control',
+    body: 'Manage media, categories, and identity with a clean creator workflow that stays in your hands.',
+    icon: ShieldCheck,
+  },
+  {
+    title: 'Community ready',
+    body: 'From solo portfolios to group albums, the platform adapts to creators, teams, and communities.',
+    icon: Users,
+  },
+]
 
 export default function AboutPage() {
   return (
-    <PageShell
-      title={`About ${SITE_CONFIG.name}`}
-      description={`${SITE_CONFIG.name} is a modern platform for creators, communities, and curated business discovery.`}
-      actions={
-        <>
-          <Button variant="outline" asChild>
-            <Link href="/team">Meet the Team</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/contact">Contact Us</Link>
-          </Button>
-        </>
-      }
-    >
-      <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <Card className="border-border bg-card">
-          <CardContent className="space-y-4 p-6">
-            <Badge variant="secondary">Our Story</Badge>
-            <h2 className="text-2xl font-semibold text-foreground">
-              A single home for knowledge, discovery, and community.
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              {SITE_CONFIG.name} brings together publishing, listings, and social bookmarking so teams can move faster
-              and keep their best resources close.
+    <div className="min-h-screen bg-[#ecf2f7] text-[#15232e]">
+      <NavbarShell />
+      <main>
+        <section className="relative overflow-hidden">
+          <div className="absolute inset-0">
+            <ContentImage
+              src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1800&q=80"
+              alt="About hero background"
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(9,24,40,0.70)_0%,rgba(9,24,40,0.58)_50%,rgba(9,24,40,0.68)_100%)]" />
+          </div>
+          <div className="relative mx-auto max-w-7xl px-4 py-20 text-white sm:px-6 lg:px-8 lg:py-24">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-200">About {SITE_CONFIG.name}</p>
+            <h1 className="mt-4 max-w-4xl text-5xl font-semibold tracking-[-0.05em] sm:text-6xl">
+              Built for creators who want media to be the main story
+            </h1>
+            <p className="mt-6 max-w-3xl text-base text-slate-200">
+              {SITE_CONFIG.name} is an image and video platform designed for faster publishing, cleaner discovery, and stronger creator identity.
             </p>
-            <div className="grid gap-4 sm:grid-cols-3">
-              {highlights.map((item) => (
-                <div key={item.label} className="rounded-lg border border-border bg-secondary/40 p-4">
-                  <div className="text-2xl font-semibold text-foreground">{item.value}</div>
-                  <div className="text-xs text-muted-foreground">{item.label}</div>
-                </div>
-              ))}
+            <div className="mt-9 flex flex-wrap gap-3">
+              <Link href="/images" className="inline-flex items-center gap-2 rounded-full bg-[#d5e9fb] px-6 py-3 text-sm font-semibold text-[#133a5a] hover:bg-[#c5e1f8]">
+                Explore images
+              </Link>
+              <Link href="/contact" className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3 text-sm font-semibold text-white hover:bg-white/20">
+                Contact our team
+              </Link>
             </div>
-          </CardContent>
-        </Card>
-        <div className="space-y-4">
-          {values.map((value) => (
-            <Card key={value.title} className="border-border bg-card">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-semibold text-foreground">{value.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{value.description}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
+          </div>
+        </section>
 
-      <div className="mt-10 grid gap-6 md:grid-cols-3">
-        {mockTeamMembers.map((member) => (
-          <Card key={member.id} className="border-border bg-card transition-transform hover:-translate-y-1">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-12 w-12">
-                  <AvatarImage src={member.avatar} alt={member.name} />
-                  <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">{member.name}</p>
-                  <p className="text-xs text-muted-foreground">{member.role}</p>
-                </div>
+        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="grid gap-6 md:grid-cols-3">
+            <article className="rounded-[1.4rem] border border-[#cfdeea] bg-white p-6">
+              <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-[#607384]">Creators</h2>
+              <p className="mt-3 text-4xl font-semibold tracking-[-0.04em]">12k+</p>
+              <p className="mt-2 text-sm text-[#536573]">Active image and video publishers</p>
+            </article>
+            <article className="rounded-[1.4rem] border border-[#cfdeea] bg-white p-6">
+              <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-[#607384]">Media Uploaded</h2>
+              <p className="mt-3 text-4xl font-semibold tracking-[-0.04em]">2.4M+</p>
+              <p className="mt-2 text-sm text-[#536573]">Photos, reels, and curated albums</p>
+            </article>
+            <article className="rounded-[1.4rem] border border-[#cfdeea] bg-white p-6">
+              <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-[#607384]">Monthly Reach</h2>
+              <p className="mt-3 text-4xl font-semibold tracking-[-0.04em]">980k</p>
+              <p className="mt-2 text-sm text-[#536573]">Visual views across creator pages</p>
+            </article>
+          </div>
+        </section>
+
+        <section className="bg-white">
+          <div className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8">
+            <div className="rounded-[1.8rem] border border-[#d6e2ec] bg-[#f7fbff] p-7">
+              <h2 className="text-3xl font-semibold tracking-[-0.04em]">What we stand for</h2>
+              <p className="mt-4 text-sm leading-8 text-[#4f6372]">
+                We believe media platforms should feel calm, clear, and creator-friendly. That means fewer distracting blocks and stronger image surfaces.
+              </p>
+              <div className="mt-6 grid gap-3">
+                {pillars.map((pillar) => (
+                  <div key={pillar.title} className="rounded-xl border border-[#d4e2ee] bg-white p-4">
+                    <pillar.icon className="h-5 w-5 text-[#2b82c7]" />
+                    <h3 className="mt-3 text-lg font-semibold">{pillar.title}</h3>
+                    <p className="mt-2 text-sm text-[#536573]">{pillar.body}</p>
+                  </div>
+                ))}
               </div>
-              <p className="mt-3 text-sm text-muted-foreground">{member.bio}</p>
-              <p className="mt-3 text-xs text-muted-foreground">{member.location}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </PageShell>
-  );
+            </div>
+
+            <div className="grid gap-4">
+              <article className="rounded-[1.6rem] border border-[#d6e2ec] bg-[#f1f8ff] p-6">
+                <p className="inline-flex items-center gap-2 text-xl font-semibold">
+                  <Sparkles className="h-5 w-5 text-[#2b82c7]" />
+                  Designed for visual momentum
+                </p>
+                <p className="mt-3 text-sm leading-7 text-[#526371]">
+                  From upload to showcase, each step is made to keep creators moving fast with clean tools.
+                </p>
+              </article>
+              <article className="rounded-[1.6rem] border border-[#d6e2ec] bg-[#f1f8ff] p-6">
+                <p className="inline-flex items-center gap-2 text-xl font-semibold">
+                  <Video className="h-5 w-5 text-[#2b82c7]" />
+                  Image and video in one flow
+                </p>
+                <p className="mt-3 text-sm leading-7 text-[#526371]">
+                  Publish photography, short clips, and long-form visuals in a single consistent workspace.
+                </p>
+              </article>
+              <article className="rounded-[1.6rem] border border-[#d6e2ec] bg-[#f1f8ff] p-6">
+                <p className="inline-flex items-center gap-2 text-xl font-semibold">
+                  <Globe2 className="h-5 w-5 text-[#2b82c7]" />
+                  Built for global communities
+                </p>
+                <p className="mt-3 text-sm leading-7 text-[#526371]">
+                  Support creator groups, niche communities, and teams that need elegant visual spaces.
+                </p>
+              </article>
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </div>
+  )
 }

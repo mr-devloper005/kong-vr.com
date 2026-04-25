@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { useParams } from "next/navigation";
-import { MapPin, Globe, Phone, Tag, Mail } from "lucide-react";
+import { Globe, Mail, MapPin, Phone, Sparkles, Tag } from "lucide-react";
 import { NavbarShell } from "@/components/shared/navbar-shell";
 import { Footer } from "@/components/shared/footer";
 import { TaskImageCarousel } from "@/components/tasks/task-image-carousel";
@@ -109,14 +109,14 @@ export default function LocalPostDetailPage() {
 
   if (!post || !taskConfig) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-[#ecf2f7]">
         <NavbarShell />
         <main className="mx-auto max-w-3xl px-4 py-20 text-center">
-          <h1 className="text-2xl font-semibold text-foreground">Post not found</h1>
-          <p className="mt-2 text-muted-foreground">
-            This local post isn’t available on this device.
+          <h1 className="text-2xl font-semibold text-[#15232e]">Post not found</h1>
+          <p className="mt-2 text-[#5f7383]">
+            This local post is not available on this device.
           </p>
-          <Button className="mt-6" asChild>
+          <Button className="mt-6 rounded-full bg-[#123e60] hover:bg-[#0f324f]" asChild>
             <Link href="/">Back home</Link>
           </Button>
         </main>
@@ -135,32 +135,40 @@ export default function LocalPostDetailPage() {
   const mapEmbedUrl = buildMapEmbedUrl(content.latitude, content.longitude, location);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[#ecf2f7] text-[#15232e]">
       <NavbarShell />
-      <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+      <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <Link
           href={taskConfig.route}
-          className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          className="mb-6 inline-flex items-center text-sm font-medium text-[#5b7080] hover:text-[#15232e]"
         >
           ← Back to {taskConfig.label}
         </Link>
 
         {isArticle ? (
-          <div className="mx-auto w-full max-w-4xl space-y-6">
-            <h1 className="text-4xl font-semibold leading-tight text-foreground">{post.title}</h1>
+          <div className="mx-auto w-full max-w-4xl space-y-6 rounded-[2rem] border border-[#ccdae7] bg-white p-8 shadow-[0_24px_60px_rgba(10,33,51,0.08)]">
+            <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#607486]">
+              <Sparkles className="h-3.5 w-3.5 text-[#2b82c7]" />
+              Local article
+            </p>
+            <h1 className="text-4xl font-semibold leading-tight text-[#15232e]">{post.title}</h1>
             {images[0] ? (
-              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-3xl border border-border bg-muted">
+              <div className="relative aspect-[16/9] w-full overflow-hidden rounded-3xl border border-[#d2e0eb] bg-[#f2f8ff]">
                 <ContentImage src={images[0]} alt={post.title} fill className="object-cover" intrinsicWidth={1600} intrinsicHeight={900} />
               </div>
             ) : null}
             <RichContent html={formatRichHtml(description, "Details coming soon.")} />
           </div>
         ) : isPdf ? (
-          <div className="mx-auto w-full max-w-4xl">
-            <h1 className="text-3xl font-semibold text-foreground">{post.title}</h1>
-            <RichContent html={descriptionHtml} className="mt-2 text-sm" />
+          <div className="mx-auto w-full max-w-4xl rounded-[2rem] border border-[#ccdae7] bg-white p-8 shadow-[0_24px_60px_rgba(10,33,51,0.08)]">
+            <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#607486]">
+              <Tag className="h-3.5 w-3.5 text-[#2b82c7]" />
+              PDF detail
+            </p>
+            <h1 className="mt-3 text-3xl font-semibold text-[#15232e]">{post.title}</h1>
+            <RichContent html={descriptionHtml} className="mt-3 text-sm" />
             {content.fileUrl ? (
-              <div className="mt-6 overflow-hidden rounded-2xl border border-border bg-white">
+              <div className="mt-6 overflow-hidden rounded-2xl border border-[#d2e0eb] bg-white">
                 <iframe
                   title={post.title}
                   src={`${content.fileUrl}#toolbar=0&navpanes=0&scrollbar=0`}
@@ -169,7 +177,7 @@ export default function LocalPostDetailPage() {
               </div>
             ) : null}
             {content.fileUrl ? (
-              <Button className="mt-6" asChild>
+              <Button className="mt-6 rounded-full bg-[#123e60] hover:bg-[#0f324f]" asChild>
                 <Link href={content.fileUrl} target="_blank" rel="noreferrer">
                   Download PDF
                 </Link>
@@ -177,12 +185,12 @@ export default function LocalPostDetailPage() {
             ) : null}
           </div>
         ) : (
-          <div className="grid gap-10 lg:grid-cols-[2fr_1fr]">
-            <div>
+          <div className="grid gap-8 lg:grid-cols-[2fr_1fr]">
+            <div className="rounded-[2rem] border border-[#ccdae7] bg-white p-6 shadow-[0_24px_60px_rgba(10,33,51,0.08)]">
               <TaskImageCarousel images={images} />
               <div className="mt-6">
-                <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                  <Badge variant="secondary" className="inline-flex items-center gap-1">
+                <div className="flex flex-wrap items-center gap-3 text-sm text-[#5a6f7f]">
+                  <Badge className="inline-flex items-center gap-1 rounded-full bg-[#e5f2fd] text-[#1d5f93] hover:bg-[#d4eafe]">
                     <Tag className="h-3.5 w-3.5" />
                     {category}
                   </Badge>
@@ -193,23 +201,19 @@ export default function LocalPostDetailPage() {
                     </span>
                   ) : null}
                 </div>
-                <h1 className="mt-4 text-3xl font-semibold text-foreground">{post.title}</h1>
+                <h1 className="mt-4 text-3xl font-semibold text-[#15232e]">{post.title}</h1>
                 <RichContent html={descriptionHtml} className="mt-3 max-w-3xl" />
               </div>
             </div>
-            <div className="space-y-4">
-              <div className="rounded-2xl border border-border bg-card p-5">
-                <h2 className="text-base font-semibold text-foreground">Details</h2>
-                <div className="mt-4 space-y-3 text-sm text-muted-foreground">
+
+            <aside className="space-y-4">
+              <div className="rounded-[1.5rem] border border-[#cfdeea] bg-white p-5 shadow-[0_18px_45px_rgba(12,34,52,0.07)]">
+                <h2 className="text-base font-semibold text-[#15232e]">Details</h2>
+                <div className="mt-4 space-y-3 text-sm text-[#5a6f7f]">
                   {content.website ? (
                     <div className="flex items-start gap-2">
                       <Globe className="mt-0.5 h-4 w-4" />
-                      <a
-                        href={content.website}
-                        className="break-all text-foreground hover:underline"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
+                      <a href={content.website} className="break-all text-[#153f62] hover:underline" target="_blank" rel="noreferrer">
                         {content.website}
                       </a>
                     </div>
@@ -223,12 +227,7 @@ export default function LocalPostDetailPage() {
                   {content.email ? (
                     <div className="flex items-start gap-2">
                       <Mail className="mt-0.5 h-4 w-4" />
-                      <a
-                        href={`mailto:${content.email}`}
-                        className="break-all text-foreground hover:underline"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
+                      <a href={`mailto:${content.email}`} className="break-all text-[#153f62] hover:underline" target="_blank" rel="noreferrer">
                         {content.email}
                       </a>
                     </div>
@@ -241,30 +240,27 @@ export default function LocalPostDetailPage() {
                   ) : null}
                 </div>
               </div>
+
               {content.highlights?.length ? (
-                <div className="rounded-2xl border border-border bg-card p-5">
-                  <h2 className="text-base font-semibold text-foreground">Highlights</h2>
-                  <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+                <div className="rounded-[1.5rem] border border-[#cfdeea] bg-white p-5 shadow-[0_18px_45px_rgba(12,34,52,0.07)]">
+                  <h2 className="text-base font-semibold text-[#15232e]">Highlights</h2>
+                  <ul className="mt-3 space-y-2 text-sm text-[#5a6f7f]">
                     {content.highlights.map((item) => (
                       <li key={item}>• {item}</li>
                     ))}
                   </ul>
                 </div>
               ) : null}
+
               {mapEmbedUrl ? (
-                <div className="rounded-2xl border border-border bg-card p-4">
-                  <h2 className="text-base font-semibold text-foreground">Location map</h2>
-                  <div className="mt-3 overflow-hidden rounded-xl border border-border">
-                    <iframe
-                      title="Business location map"
-                      src={mapEmbedUrl}
-                      className="h-56 w-full"
-                      loading="lazy"
-                    />
+                <div className="rounded-[1.5rem] border border-[#cfdeea] bg-white p-4 shadow-[0_18px_45px_rgba(12,34,52,0.07)]">
+                  <h2 className="text-base font-semibold text-[#15232e]">Location map</h2>
+                  <div className="mt-3 overflow-hidden rounded-xl border border-[#d5e3ee]">
+                    <iframe title="Business location map" src={mapEmbedUrl} className="h-56 w-full" loading="lazy" />
                   </div>
                 </div>
               ) : null}
-            </div>
+            </aside>
           </div>
         )}
       </main>
