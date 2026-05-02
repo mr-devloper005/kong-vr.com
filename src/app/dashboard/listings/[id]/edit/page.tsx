@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
-import { mockListings } from '@/data/mock-data'
 import { loadFromStorage, saveToStorage, storageKeys } from '@/lib/local-storage'
 import type { Listing } from '@/types'
 import { useAuth } from '@/lib/auth-context'
@@ -18,10 +17,10 @@ export default function DashboardListingEditPage({ params }: { params: Promise<{
   const { toast } = useToast()
   const { user } = useAuth()
   const [saved, setSaved] = useState(false)
-  const [storedListings, setStoredListings] = useState<Listing[]>([])
+  const [listings, setListings] = useState<Listing[]>([])
   const listing = useMemo(
-    () => [...storedListings, ...mockListings].find((item) => item.id === resolvedParams.id),
-    [resolvedParams.id, storedListings]
+    () => listings.find((item) => item.id === resolvedParams.id),
+    [resolvedParams.id, listings]
   )
   const canEdit = listing ? (listing.id.startsWith('user-') || (user && listing.owner.id === user.id)) : false
   const [title, setTitle] = useState('')
@@ -29,7 +28,7 @@ export default function DashboardListingEditPage({ params }: { params: Promise<{
   const [description, setDescription] = useState('')
 
   useEffect(() => {
-    setStoredListings(loadFromStorage<Listing[]>(storageKeys.listings, []))
+    setListings(loadFromStorage<Listing[]>(storageKeys.listings, []))
   }, [])
 
   useEffect(() => {
@@ -87,7 +86,7 @@ export default function DashboardListingEditPage({ params }: { params: Promise<{
                 ? current.map((item) => (item.id === listing.id ? updated : item))
                 : [updated, ...current]
               saveToStorage(storageKeys.listings, next)
-              setStoredListings(next)
+              setListings(next)
               setSaved(true)
               toast({ title: 'Listing updated', description: 'Your changes were saved.' })
             }}

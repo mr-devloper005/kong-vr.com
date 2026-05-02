@@ -15,7 +15,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useToast } from '@/components/ui/use-toast'
-import { mockListings } from '@/data/mock-data'
 import type { Listing } from '@/types'
 import { loadFromStorage, storageKeys } from '@/lib/local-storage'
 import { useAuth } from '@/lib/auth-context'
@@ -24,13 +23,12 @@ export default function DashboardListingDetailPage({ params }: { params: Promise
   const resolvedParams = use(params)
   const { toast } = useToast()
   const { user } = useAuth()
-  const [storedListings, setStoredListings] = useState<Listing[]>([])
-  const allListings = useMemo(() => [...storedListings, ...mockListings], [storedListings])
-  const listing = allListings.find((item) => item.id === resolvedParams.id)
+  const [listings, setListings] = useState<Listing[]>([])
+  const listing = listings.find((item) => item.id === resolvedParams.id)
   const canEdit = listing ? (listing.id.startsWith('user-') || (user && listing.owner.id === user.id)) : false
 
   useEffect(() => {
-    setStoredListings(loadFromStorage<Listing[]>(storageKeys.listings, []))
+    setListings(loadFromStorage<Listing[]>(storageKeys.listings, []))
   }, [])
 
   if (!listing) {

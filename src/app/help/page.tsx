@@ -3,7 +3,24 @@ import { BookOpenCheck, Camera, Image as ImageIcon, Upload, UserRound, Video } f
 import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { mockFaqs } from '@/data/mock-data'
+
+const faqs = [
+  {
+    id: 'faq-1',
+    question: 'How do I submit a bookmark?',
+    answer: 'Open Social Bookmarks and choose Submit Bookmark to add your link.'
+  },
+  {
+    id: 'faq-2',
+    question: 'Can I create private collections?',
+    answer: 'Yes. Set your collection to private when creating it.'
+  },
+  {
+    id: 'faq-3',
+    question: 'How do I upgrade plans?',
+    answer: 'Go to Settings, then Billing to manage your subscription.'
+  }
+]
 
 const guides = [
   {
@@ -73,7 +90,7 @@ export default function HelpPage() {
               </h2>
               <p className="mt-3 text-sm text-[#556977]">Quick answers to common publishing, account, and creator profile topics.</p>
               <Accordion type="single" collapsible className="mt-5">
-                {mockFaqs.map((faq) => (
+                {faqs.map((faq) => (
                   <AccordionItem key={faq.id} value={faq.id}>
                     <AccordionTrigger>{faq.question}</AccordionTrigger>
                     <AccordionContent>{faq.answer}</AccordionContent>

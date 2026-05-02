@@ -17,20 +17,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { mockBookmarks } from '@/data/mock-data'
 import { useAuth } from '@/lib/auth-context'
 import { useToast } from '@/components/ui/use-toast'
 import { loadFromStorage, saveToStorage, storageKeys } from '@/lib/local-storage'
 import type { Bookmark as BookmarkType } from '@/types'
 
+const CATEGORY_OPTIONS = ['Design', 'Productivity', 'AI', 'Frontend', 'Research', 'Business', 'Development', 'General']
+
 export default function SubmitBookmarkPage() {
   const router = useRouter()
   const { user } = useAuth()
   const { toast } = useToast()
-  const categoryOptions = useMemo(
-    () => Array.from(new Set(mockBookmarks.map((bookmark) => bookmark.category))),
-    []
-  )
   const [statusMessage, setStatusMessage] = useState('')
   const [url, setUrl] = useState('')
   const [title, setTitle] = useState('')
@@ -172,7 +169,7 @@ export default function SubmitBookmarkPage() {
                       <SelectValue placeholder="Choose a category" />
                     </SelectTrigger>
                     <SelectContent>
-                      {categoryOptions.map((categoryOption) => (
+                      {CATEGORY_OPTIONS.map((categoryOption) => (
                         <SelectItem key={categoryOption} value={categoryOption}>
                           {categoryOption}
                         </SelectItem>
