@@ -187,13 +187,40 @@ export async function TaskListPage({ task, category }: { task: TaskKey; category
         ) : null}
 
         {layoutKey === 'profile-creator' || layoutKey === 'profile-business' ? (
-          <section className={`mb-12 rounded-[2.2rem] p-8 shadow-[0_24px_70px_rgba(15,23,42,0.1)] ${ui.panel}`}>
-            <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
-              <div className={`min-h-[240px] rounded-[2rem] ${ui.soft}`} />
-              <div>
+          <section className={`mb-12 overflow-hidden rounded-[2.2rem] shadow-[0_24px_70px_rgba(15,23,42,0.1)] ${ui.panel}`}>
+            <div className="grid gap-0 lg:grid-cols-[0.8fr_1.2fr] lg:items-stretch">
+              <div className={`relative min-h-[280px] border-b border-white/10 lg:border-b-0 lg:border-r ${ui.soft}`}>
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.18),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.08))]" />
+                <div className="relative flex h-full flex-col justify-between p-8">
+                  <div className="flex items-center gap-3">
+                    <div className="h-14 w-14 rounded-full border border-white/20 bg-white/10" />
+                    <div className="space-y-2">
+                      <div className="h-3 w-20 rounded-full bg-white/12" />
+                      <div className="h-3 w-32 rounded-full bg-white/8" />
+                    </div>
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {['Identity-led cards', 'Stronger trust cues', 'Cleaner profile intro', 'Editorial feed pacing'].map((item) => (
+                      <div key={item} className="rounded-[1.3rem] border border-white/10 bg-white/6 p-4 text-sm">
+                        {item}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="p-8">
                 <p className={`text-xs uppercase tracking-[0.3em] ${ui.muted}`}>{taskConfig?.label || task}</p>
                 <h1 className="mt-3 text-4xl font-semibold tracking-[-0.05em] text-foreground">Profiles with stronger identity, trust, and reputation cues.</h1>
-                <p className={`mt-5 max-w-2xl text-sm leading-8 ${ui.muted}`}>This layout prioritizes the person or business surface first, then lets the feed continue below without borrowing the same visual logic used by articles or listings.</p>
+                <p className={`mt-5 max-w-2xl text-sm leading-8 ${ui.muted}`}>This layout now behaves more like a featured profile journal: a prominent identity block, layered support panels, and cards that feel built for people and brands instead of generic posts.</p>
+                <form className="mt-6 flex flex-wrap items-center gap-3" action={taskConfig?.route || '#'}>
+                  <select name="category" defaultValue={normalizedCategory} className={`h-11 min-w-[220px] rounded-xl px-3 text-sm ${ui.input}`}>
+                    <option value="all">All categories</option>
+                    {CATEGORY_OPTIONS.map((item) => (
+                      <option key={item.slug} value={item.slug}>{item.name}</option>
+                    ))}
+                  </select>
+                  <button type="submit" className={`h-11 rounded-xl px-5 text-sm font-medium ${ui.button}`}>Filter profiles</button>
+                </form>
               </div>
             </div>
           </section>

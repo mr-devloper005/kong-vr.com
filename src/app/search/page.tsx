@@ -3,8 +3,6 @@ import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { fetchSiteFeed } from '@/lib/site-connector'
 import { buildPostUrl, getPostTaskKey } from '@/lib/task-data'
-import { getMockPostsForTask } from '@/lib/mock-posts'
-import { SITE_CONFIG } from '@/lib/site-config'
 import { TaskPostCard } from '@/components/shared/task-post-card'
 
 export const revalidate = 3
@@ -35,11 +33,7 @@ export default async function SearchPage({
     useMaster ? { fresh: true, category: category || undefined, task: task || undefined } : undefined
   )
 
-  const posts = feed?.posts?.length
-    ? feed.posts
-    : useMaster
-      ? []
-      : SITE_CONFIG.tasks.flatMap((enabledTask) => getMockPostsForTask(enabledTask.key))
+  const posts = feed?.posts || []
 
   const filtered = posts.filter((post) => {
     const content = post.content && typeof post.content === 'object' ? post.content : {}

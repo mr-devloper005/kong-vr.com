@@ -22,6 +22,7 @@ type PostContent = {
   phone?: string;
   email?: string;
   description?: string;
+  body?: string;
   highlights?: string[];
   logo?: string;
   images?: string[];
@@ -126,8 +127,13 @@ export default function LocalPostDetailPage() {
   }
 
   const category = content.category || post.tags?.[0] || taskConfig.label;
+  const detailText =
+    (typeof content.body === "string" && content.body.trim()) ||
+    content.description ||
+    post.summary ||
+    "Details coming soon.";
   const description = content.description || post.summary || "Details coming soon.";
-  const descriptionHtml = formatRichHtml(description, "Details coming soon.");
+  const descriptionHtml = formatRichHtml(detailText, "Details coming soon.");
   const location = content.address || content.location;
   const images = getImageUrls(post, content);
   const isArticle = task === "article";
@@ -142,7 +148,7 @@ export default function LocalPostDetailPage() {
           href={taskConfig.route}
           className="mb-6 inline-flex items-center text-sm font-medium text-[#5b7080] hover:text-[#15232e]"
         >
-          ← Back to {taskConfig.label}
+          Back to {taskConfig.label}
         </Link>
 
         {isArticle ? (
@@ -157,7 +163,7 @@ export default function LocalPostDetailPage() {
                 <ContentImage src={images[0]} alt={post.title} fill className="object-cover" intrinsicWidth={1600} intrinsicHeight={900} />
               </div>
             ) : null}
-            <RichContent html={formatRichHtml(description, "Details coming soon.")} />
+            <RichContent html={formatRichHtml(detailText, "Details coming soon.")} />
           </div>
         ) : isPdf ? (
           <div className="mx-auto w-full max-w-4xl rounded-[2rem] border border-[#ccdae7] bg-white p-8 shadow-[0_24px_60px_rgba(10,33,51,0.08)]">
@@ -246,7 +252,7 @@ export default function LocalPostDetailPage() {
                   <h2 className="text-base font-semibold text-[#15232e]">Highlights</h2>
                   <ul className="mt-3 space-y-2 text-sm text-[#5a6f7f]">
                     {content.highlights.map((item) => (
-                      <li key={item}>• {item}</li>
+                      <li key={item}>- {item}</li>
                     ))}
                   </ul>
                 </div>
