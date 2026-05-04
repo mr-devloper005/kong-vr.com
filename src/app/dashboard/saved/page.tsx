@@ -1,11 +1,11 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 import { PageShell } from '@/components/shared/page-shell'
 import { BookmarkCard } from '@/components/sbm/bookmark-card'
 import { ArticleCard, ListingCard, ClassifiedAdCard } from '@/components/shared/cards'
-import { mockBookmarks, mockArticles, mockBookmarkCollections, mockListings, mockClassifiedAds } from '@/data/mock-data'
+
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -37,11 +37,7 @@ export default function DashboardSavedPage() {
   const [selectedAdIds, setSelectedAdIds] = useState<string[]>([])
   const [activeAdSheetId, setActiveAdSheetId] = useState<string | null>(null)
   const [confirmClearAds, setConfirmClearAds] = useState(false)
-  const defaultSavedBookmarkIds = useMemo(
-    () => mockBookmarks.filter((bookmark) => bookmark.isSaved).map((bookmark) => bookmark.id),
-    []
-  )
-  const [savedIds, setSavedIds] = useState<string[]>(defaultSavedBookmarkIds)
+  const [savedIds, setSavedIds] = useState<string[]>([])
   const [savedArticleIds, setSavedArticleIds] = useState<string[]>([])
   const [savedListingIds, setSavedListingIds] = useState<string[]>([])
   const [savedAdIds, setSavedAdIds] = useState<string[]>([])
@@ -51,7 +47,7 @@ export default function DashboardSavedPage() {
   const [storedAds, setStoredAds] = useState<ClassifiedAd[]>([])
 
   useEffect(() => {
-    setSavedIds(loadFromStorage<string[]>(storageKeys.bookmarkSaves, defaultSavedBookmarkIds))
+    setSavedIds(loadFromStorage<string[]>(storageKeys.bookmarkSaves, []))
     setSavedArticleIds(loadFromStorage<string[]>(storageKeys.articleSaves, []))
     setSavedListingIds(loadFromStorage<string[]>(storageKeys.listingSaves, []))
     setSavedAdIds(loadFromStorage<string[]>(storageKeys.adSaves, []))
@@ -59,54 +55,26 @@ export default function DashboardSavedPage() {
     setStoredArticles(loadFromStorage<Article[]>(storageKeys.articles, []))
     setStoredListings(loadFromStorage<Listing[]>(storageKeys.listings, []))
     setStoredAds(loadFromStorage<ClassifiedAd[]>(storageKeys.ads, []))
-  }, [defaultSavedBookmarkIds])
+  }, [])
   const allBookmarks = useMemo(() => {
-    const map = new Map<string, BookmarkType>()
-    storedBookmarks.forEach((bookmark) => map.set(bookmark.id, bookmark))
-    mockBookmarks.forEach((bookmark) => {
-      if (!map.has(bookmark.id)) {
-        map.set(bookmark.id, bookmark)
-      }
-    })
-    return Array.from(map.values())
+    return storedBookmarks
   }, [storedBookmarks])
 
   const savedBookmarks = allBookmarks.filter((bookmark) => savedIds.includes(bookmark.id))
   const allSelected = selectedIds.length === savedBookmarks.length && savedBookmarks.length > 0
 
   const allArticles = useMemo(() => {
-    const map = new Map<string, Article>()
-    storedArticles.forEach((article) => map.set(article.id, article))
-    mockArticles.forEach((article) => {
-      if (!map.has(article.id)) {
-        map.set(article.id, article)
-      }
-    })
-    return Array.from(map.values())
+    return storedArticles
   }, [storedArticles])
   const savedArticles = allArticles.filter((article) => savedArticleIds.includes(article.id))
 
   const allListings = useMemo(() => {
-    const map = new Map<string, Listing>()
-    storedListings.forEach((listing) => map.set(listing.id, listing))
-    mockListings.forEach((listing) => {
-      if (!map.has(listing.id)) {
-        map.set(listing.id, listing)
-      }
-    })
-    return Array.from(map.values())
+    return storedListings
   }, [storedListings])
   const savedListings = allListings.filter((listing) => savedListingIds.includes(listing.id))
 
   const allAds = useMemo(() => {
-    const map = new Map<string, ClassifiedAd>()
-    storedAds.forEach((ad) => map.set(ad.id, ad))
-    mockClassifiedAds.forEach((ad) => {
-      if (!map.has(ad.id)) {
-        map.set(ad.id, ad)
-      }
-    })
-    return Array.from(map.values())
+    return storedAds
   }, [storedAds])
   const savedAds = allAds.filter((ad) => savedAdIds.includes(ad.id))
   const allAdsSelected = selectedAdIds.length === savedAds.length && savedAds.length > 0
@@ -417,31 +385,9 @@ export default function DashboardSavedPage() {
           <DialogHeader>
             <DialogTitle>Move to collection</DialogTitle>
           </DialogHeader>
-          <div className="space-y-2">
-            {mockBookmarkCollections.map((collection) => (
-              <button
-                key={collection.id}
-                onClick={() => setSelectedCollection(collection.id)}
-                className={`w-full rounded-lg border border-border px-3 py-2 text-left text-sm transition-colors ${
-                  selectedCollection === collection.id ? 'bg-secondary' : 'bg-card'
-                }`}
-              >
-                <div className="font-medium text-foreground">{collection.name}</div>
-                <div className="text-xs text-muted-foreground">{collection.description}</div>
-              </button>
-            ))}
-          </div>
+          <p className="text-sm text-muted-foreground">No collections available.</p>
           <DialogFooter>
             <Button variant="outline" onClick={() => setMoveOpen(false)}>Cancel</Button>
-            <Button
-              onClick={() => {
-                handleBulkAction('Moved')
-                setMoveOpen(false)
-              }}
-              disabled={!selectedCollection}
-            >
-              Move
-            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

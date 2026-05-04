@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { TaskPostCard } from "@/components/shared/task-post-card";
 import { buildPostUrl } from "@/lib/task-data";
 import { normalizeCategory, isValidCategory } from "@/lib/categories";
@@ -16,6 +16,24 @@ type Props = {
 
 export function TaskListClient({ task, initialPosts, category }: Props) {
   const localPosts = getLocalPostsForTask(task);
+
+  // Debug filtering
+  useEffect(() => {
+    console.log('[Filter Debug] Category:', category);
+    console.log('[Filter Debug] Total posts:', initialPosts.length);
+    if (initialPosts.length > 0) {
+      const firstPost = initialPosts[0];
+      const content = firstPost.content as any;
+      const tags = firstPost.tags || [];
+      const validTag = tags.find((t: string) => isValidCategory(String(t)));
+      console.log('[Filter Debug] First post:', {
+        title: firstPost.title?.slice(0, 30),
+        contentCategory: content?.category,
+        tags: tags,
+        detectedCategory: content?.category || validTag || 'none'
+      });
+    }
+  }, [category, initialPosts]);
 
   const merged = useMemo(() => {
     const bySlug = new Set<string>();
@@ -44,10 +62,15 @@ export function TaskListClient({ task, initialPosts, category }: Props) {
 
     return combined.filter((post) => {
       const content = post.content && typeof post.content === "object" ? post.content : {};
-      const value =
+      const contentCategory =
         typeof (content as any).category === "string"
           ? normalizeCategory((content as any).category)
           : "";
+      // Find first valid category tag (skip task type tags like "image", "article", etc.)
+      const tags = Array.isArray(post.tags) ? post.tags : [];
+      const validCategoryTag = tags.find((t) => isValidCategory(String(t)));
+      const tagCategory = validCategoryTag ? normalizeCategory(String(validCategoryTag)) : "";
+      const value = contentCategory || tagCategory;
       return value === normalizedCategory;
     });
   }, [category, initialPosts, localPosts]);
@@ -55,13 +78,22 @@ export function TaskListClient({ task, initialPosts, category }: Props) {
   if (!merged.length) {
     return (
       <div className="rounded-2xl border border-dashed border-border p-10 text-center text-muted-foreground">
-        No posts yet for this section.
+        {category && category !== 'all' 
+          ? `No posts found for category "${category}". Try selecting a different category.` 
+          : 'No posts yet for this section.'}
       </div>
     );
   }
 
+  const gridClass =
+    task === "image"
+      ? "grid gap-6 sm:grid-cols-2 xl:grid-cols-3"
+      : task === "profile"
+        ? "grid gap-6 md:grid-cols-2 xl:grid-cols-3"
+        : "grid gap-6 sm:grid-cols-2 lg:grid-cols-4";
+
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div className={gridClass}>
       {merged.map((post) => {
         const localOnly = (post as any).localOnly;
         const href = localOnly

@@ -4,7 +4,7 @@ import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { ContentImage } from '@/components/shared/content-image'
 
-export const HOME_PAGE_OVERRIDE_ENABLED = true
+export const HOME_PAGE_OVERRIDE_ENABLED = false
 
 const heroImages = [
   'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2000&q=80',
@@ -12,30 +12,6 @@ const heroImages = [
   'https://images.unsplash.com/photo-1499084732479-de2c02d45fc4?auto=format&fit=crop&w=1400&q=80',
   'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1400&q=80',
   'https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?auto=format&fit=crop&w=1400&q=80',
-]
-
-const newsCards = [
-  {
-    title: 'New Gallery Layout',
-    subtitle: 'A cleaner visual wall for photos and reels.',
-    image: 'https://images.unsplash.com/photo-1444492417251-9c84a5fa18e0?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    title: 'Faster Upload Flow',
-    subtitle: 'Batch upload and instant previews for creators.',
-    image: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=900&q=80',
-  },
-  {
-    title: 'Community Albums',
-    subtitle: 'Shared collections for teams and creators.',
-    image: 'https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?auto=format&fit=crop&w=900&q=80',
-  },
-]
-
-const useCases = [
-  { title: 'Photographers', text: 'Build polished visual portfolios and private client albums.', icon: Camera },
-  { title: 'Creator Teams', text: 'Collaborate on shared galleries for campaigns and launches.', icon: Images },
-  { title: 'Video Publishers', text: 'Host cinematic clips, loops, and motion reels with ease.', icon: Video },
 ]
 
 export async function HomePageOverride() {
@@ -89,53 +65,6 @@ export async function HomePageOverride() {
                 Try online
                 <ArrowRight className="h-4 w-4" />
               </Link>
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-[#e8edf2]">
-          <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <p className="inline-flex items-center gap-2 text-4xl font-semibold tracking-[-0.03em] text-[#1b2630]">
-                <Rss className="h-8 w-8 text-[#2b82c7]" />
-                Kong VR News
-              </p>
-              <p className="mx-auto mt-5 max-w-3xl text-base text-[#4f5f6d]">
-                Stay updated with recent improvements for gallery publishing, creator pages, and media hosting.
-              </p>
-            </div>
-            <div className="mt-10 grid gap-4 md:grid-cols-3">
-              {newsCards.map((card) => (
-                <article key={card.title} className="overflow-hidden rounded-[1.3rem] border border-[#d2dde8] bg-white shadow-sm">
-                  <div className="relative h-44">
-                    <ContentImage src={card.image} alt={card.title} fill className="h-full w-full object-cover" />
-                  </div>
-                  <div className="p-5">
-                    <h3 className="text-xl font-semibold text-[#1b2530]">{card.title}</h3>
-                    <p className="mt-2 text-sm text-[#52626f]">{card.subtitle}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-[#f2f4f6]">
-          <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
-            <div className="text-center">
-              <h2 className="text-4xl font-semibold tracking-[-0.04em] text-[#1a242d]">Made for image-first communities</h2>
-              <p className="mx-auto mt-5 max-w-3xl text-base text-[#4e5f6d]">
-                Designed for visual storytelling, creator portfolios, and modern media teams.
-              </p>
-            </div>
-            <div className="mt-10 grid gap-4 md:grid-cols-3">
-              {useCases.map((item) => (
-                <article key={item.title} className="rounded-[1.2rem] border border-[#d8e1e8] bg-white p-6">
-                  <item.icon className="h-7 w-7 text-[#2b82c7]" />
-                  <h3 className="mt-4 text-2xl font-semibold text-[#1b2530]">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-[#52626f]">{item.text}</p>
-                </article>
-              ))}
             </div>
           </div>
         </section>

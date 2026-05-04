@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
-import { mockArticles } from '@/data/mock-data'
 import { loadFromStorage, saveToStorage, storageKeys } from '@/lib/local-storage'
 import type { Article } from '@/types'
 import { useAuth } from '@/lib/auth-context'
@@ -18,10 +17,10 @@ export default function DashboardArticleEditPage({ params }: { params: Promise<{
   const { toast } = useToast()
   const { user } = useAuth()
   const [saved, setSaved] = useState(false)
-  const [storedArticles, setStoredArticles] = useState<Article[]>([])
+  const [articles, setArticles] = useState<Article[]>([])
   const article = useMemo(
-    () => [...storedArticles, ...mockArticles].find((item) => item.id === resolvedParams.id),
-    [resolvedParams.id, storedArticles]
+    () => articles.find((item) => item.id === resolvedParams.id),
+    [resolvedParams.id, articles]
   )
   const canEdit = article ? (article.id.startsWith('user-') || (user && article.author.id === user.id)) : false
   const [title, setTitle] = useState('')
@@ -29,7 +28,7 @@ export default function DashboardArticleEditPage({ params }: { params: Promise<{
   const [content, setContent] = useState('')
 
   useEffect(() => {
-    setStoredArticles(loadFromStorage<Article[]>(storageKeys.articles, []))
+    setArticles(loadFromStorage<Article[]>(storageKeys.articles, []))
   }, [])
 
   useEffect(() => {
@@ -87,7 +86,7 @@ export default function DashboardArticleEditPage({ params }: { params: Promise<{
                 ? current.map((item) => (item.id === article.id ? updated : item))
                 : [updated, ...current]
               saveToStorage(storageKeys.articles, next)
-              setStoredArticles(next)
+              setArticles(next)
               setSaved(true)
               toast({ title: 'Article updated', description: 'Your changes were saved.' })
             }}

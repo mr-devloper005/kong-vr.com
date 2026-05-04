@@ -3,6 +3,10 @@ import { NavbarShell } from '@/components/shared/navbar-shell'
 import { Footer } from '@/components/shared/footer'
 import { SITE_CONFIG } from '@/lib/site-config'
 
+const contactEmail =
+  process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() ||
+  `support@${SITE_CONFIG.domain.replace(/^www\./, '')}`
+
 const supportLanes = [
   {
     title: 'Creator onboarding',
@@ -22,7 +26,7 @@ const supportLanes = [
 ]
 
 const contactCards = [
-  { label: 'Support Email', value: `support@${SITE_CONFIG.name.toLowerCase().replace(/\s+/g, '')}.com`, icon: Mail },
+  { label: 'Support Email', value: contactEmail, icon: Mail },
   { label: 'Phone', value: '+1 (800) 555-0193', icon: Phone },
   { label: 'Location', value: 'Creator Support Desk, Global Remote Team', icon: MapPin },
   { label: 'Hours', value: 'Mon - Fri, 09:00 AM to 07:00 PM', icon: Clock3 },
@@ -36,9 +40,9 @@ export default function ContactPage() {
         <section className="grid gap-8 lg:grid-cols-[1.02fr_0.98fr]">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#627788]">Contact Us</p>
-            <h1 className="mt-4 text-5xl font-semibold tracking-[-0.05em]">Let’s get your media project moving</h1>
+            <h1 className="mt-4 text-5xl font-semibold tracking-[-0.05em]">Let's get your media project moving</h1>
             <p className="mt-5 max-w-2xl text-sm leading-8 text-[#506271]">
-              Tell us what you are trying to create on {SITE_CONFIG.name}. We’ll route your request to the right support lane and reply with clear next steps.
+              Tell us what you are trying to create on {SITE_CONFIG.name}. We'll route your request to the right support lane and reply with clear next steps.
             </p>
             <div className="mt-8 grid gap-4">
               {supportLanes.map((lane) => (
@@ -60,9 +64,17 @@ export default function ContactPage() {
                 <input className="h-12 rounded-xl border border-[#d0deea] bg-[#f8fbff] px-4 text-sm outline-none transition focus:border-[#85adcf]" placeholder="Email address" />
                 <input className="h-12 rounded-xl border border-[#d0deea] bg-[#f8fbff] px-4 text-sm outline-none transition focus:border-[#85adcf]" placeholder="Subject" />
                 <textarea className="min-h-[160px] rounded-2xl border border-[#d0deea] bg-[#f8fbff] px-4 py-3 text-sm outline-none transition focus:border-[#85adcf]" placeholder="Share your message..." />
-                <button type="submit" className="inline-flex h-12 items-center justify-center rounded-full bg-[#143c5d] px-6 text-sm font-semibold text-white hover:bg-[#0f314d]">
-                  Send Message
-                </button>
+                <div className="flex flex-wrap gap-3">
+                  <button type="submit" className="inline-flex h-12 items-center justify-center rounded-full bg-[#143c5d] px-6 text-sm font-semibold text-white hover:bg-[#0f314d]">
+                    Send Message
+                  </button>
+                  <a
+                    href={`mailto:${contactEmail}`}
+                    className="inline-flex h-12 items-center justify-center rounded-full border border-[#c8d8e5] bg-[#f7fbff] px-6 text-sm font-semibold text-[#143c5d] hover:bg-[#eef6ff]"
+                  >
+                    Email Us
+                  </a>
+                </div>
               </div>
             </form>
 

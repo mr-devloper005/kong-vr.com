@@ -5,13 +5,12 @@ import Image from 'next/image'
 import { ArrowRight, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { mockArticles } from '@/data/mock-data'
 import { cn } from '@/lib/utils'
 
 export function FeaturedArticles() {
-  const featured = mockArticles.filter(a => a.isFeatured)
-  const source = featured.length >= 5 ? featured : mockArticles
-  const [hero, second, third, ...rest] = source.slice(0, 6)
+  const featured: any[] = []
+  const source = featured
+  const [hero, second, third, ...rest] = source
 
   return (
     <section className="relative overflow-hidden border-b border-border py-16">

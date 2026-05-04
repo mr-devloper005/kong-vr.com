@@ -14,7 +14,6 @@ import {
   Bike,
   Building
 } from 'lucide-react'
-import { mockCategories } from '@/data/mock-data'
 
 const iconMap: Record<string, React.ElementType> = {
   Monitor,
@@ -28,6 +27,19 @@ const iconMap: Record<string, React.ElementType> = {
   Bike,
   Building
 }
+
+const categories = [
+  { id: '1', name: 'Technology', slug: 'technology', icon: 'Monitor', count: 0 },
+  { id: '2', name: 'Design', slug: 'design', icon: 'Palette', count: 0 },
+  { id: '3', name: 'Business', slug: 'business', icon: 'Briefcase', count: 0 },
+  { id: '4', name: 'Health & Wellness', slug: 'health-wellness', icon: 'Heart', count: 0 },
+  { id: '5', name: 'Food & Drink', slug: 'food-drink', icon: 'UtensilsCrossed', count: 0 },
+  { id: '6', name: 'Services', slug: 'services', icon: 'Wrench', count: 0 },
+  { id: '7', name: 'Electronics', slug: 'electronics', icon: 'Smartphone', count: 0 },
+  { id: '8', name: 'Home & Garden', slug: 'home-garden', icon: 'Home', count: 0 },
+  { id: '9', name: 'Sports & Outdoors', slug: 'sports-outdoors', icon: 'Bike', count: 0 },
+  { id: '10', name: 'Real Estate', slug: 'real-estate', icon: 'Building', count: 0 },
+]
 
 export function CategorySection() {
   return (
@@ -43,7 +55,7 @@ export function CategorySection() {
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5">
-          {mockCategories.map((category, index) => {
+          {categories.map((category, index) => {
             const Icon = iconMap[category.icon] || Monitor
             return (
               <motion.div

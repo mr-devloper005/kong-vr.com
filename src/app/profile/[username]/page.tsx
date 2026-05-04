@@ -65,6 +65,7 @@ export default async function ProfileDetailPage({ params }: { params: Promise<{ 
   if (!post) {
     notFound();
   }
+
   const content = (post.content || {}) as Record<string, any>;
   const logoUrl = typeof content.logo === "string" ? content.logo : undefined;
   const brandName =
@@ -107,41 +108,69 @@ export default async function ProfileDetailPage({ params }: { params: Promise<{ 
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[linear-gradient(180deg,#eef3f8_0%,#ffffff_36%)]">
       <NavbarShell />
-      <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-10 sm:px-6 lg:px-8">
+      <main className="mx-auto w-full max-w-7xl px-4 pb-16 pt-10 sm:px-6 lg:px-8">
         <SchemaJsonLd data={breadcrumbData} />
-        <section className="rounded-3xl border border-border/60 bg-white/90 p-8 shadow-sm md:p-12">
-          <div className="grid gap-8 md:grid-cols-[200px_1fr] md:items-start">
-            <div className="flex justify-center md:justify-start">
-              <div className="relative h-36 w-36 overflow-hidden rounded-full border border-border/70 bg-muted">
-                {logoUrl ? (
-                  <ContentImage src={logoUrl} alt={post.title} fill className="object-cover" sizes="144px" intrinsicWidth={144} intrinsicHeight={144} />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center text-3xl font-semibold text-muted-foreground">
-                    {post.title.slice(0, 1).toUpperCase()}
+        <section className="overflow-hidden rounded-[2rem] border border-[#d4dee8] bg-white shadow-[0_28px_80px_rgba(13,34,52,0.08)]">
+          <div className="relative min-h-[220px] border-b border-[#d8e2eb] bg-[radial-gradient(circle_at_top_left,rgba(63,139,201,0.30),transparent_24%),linear-gradient(135deg,#11263f_0%,#264c70_55%,#dce7f1_160%)]">
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0))]" />
+          </div>
+          <div className="grid gap-8 p-6 md:p-8 xl:grid-cols-[280px_1fr] xl:items-start">
+            <aside className="xl:-mt-28">
+              <div className="rounded-[1.8rem] border border-[#d6e1ea] bg-white p-6 shadow-[0_18px_55px_rgba(13,34,52,0.08)]">
+                <div className="relative mx-auto h-36 w-36 overflow-hidden rounded-full border-4 border-white bg-[#e8f0f7] shadow-sm">
+                  {logoUrl ? (
+                    <ContentImage src={logoUrl} alt={post.title} fill className="object-cover" sizes="144px" intrinsicWidth={144} intrinsicHeight={144} />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-3xl font-semibold text-[#637887]">
+                      {post.title.slice(0, 1).toUpperCase()}
+                    </div>
+                  )}
+                </div>
+                <div className="mt-6 space-y-4">
+                  <div className="rounded-[1.3rem] border border-[#d8e2eb] bg-[#f8fbff] p-4">
+                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#637887]">Profile type</p>
+                    <p className="mt-2 text-sm text-[#223441]">Brand and creator identity page</p>
                   </div>
-                )}
+                  {domain ? (
+                    <div className="rounded-[1.3rem] border border-[#d8e2eb] bg-[#fffaf3] p-4">
+                      <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#637887]">Website</p>
+                      <p className="mt-2 break-all text-sm text-[#223441]">{domain}</p>
+                    </div>
+                  ) : null}
+                  {website ? (
+                    <Button asChild size="lg" className="w-full rounded-full bg-[#123e60] text-base hover:bg-[#0f324e]">
+                      <Link href={website} target="_blank" rel="noopener noreferrer">
+                        Visit Official Site
+                      </Link>
+                    </Button>
+                  ) : null}
+                </div>
               </div>
-            </div>
-            <div>
-              <h1 className="text-3xl font-bold text-foreground sm:text-4xl">{brandName}</h1>
-              {domain ? (
-                <p className="mt-1 text-sm font-medium text-muted-foreground">{domain}</p>
-              ) : null}
+            </aside>
+            <div className="pb-2">
+              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#637887]">Profile detail</p>
+              <h1 className="mt-3 text-3xl font-bold tracking-[-0.04em] text-[#15232e] sm:text-5xl">{brandName}</h1>
+              <p className="mt-4 max-w-3xl text-sm leading-8 text-[#536573]">
+                A more editorial brand profile surface with a stronger identity header, cleaner supporting facts, and a slower reading rhythm for descriptive content.
+              </p>
+              <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                {[
+                  "Identity-first profile header",
+                  "Higher-trust website and brand cues",
+                  "Cleaner descriptive reading area",
+                  "Better separation from related content",
+                ].map((item) => (
+                  <div key={item} className="rounded-[1.4rem] border border-[#d8e2eb] bg-[#f8fbff] p-4 text-sm text-[#223441]">
+                    {item}
+                  </div>
+                ))}
+              </div>
               <article
-                className="article-content prose prose-slate mt-6 max-w-2xl text-base leading-relaxed prose-p:my-4 prose-a:text-primary prose-a:underline prose-strong:font-semibold"
+                className="article-content prose prose-slate mt-8 max-w-3xl text-base leading-relaxed prose-p:my-4 prose-a:text-primary prose-a:underline prose-strong:font-semibold"
                 dangerouslySetInnerHTML={{ __html: descriptionHtml }}
               />
-              {website ? (
-                <div className="mt-8">
-                  <Button asChild size="lg" className="px-7 text-base">
-                    <Link href={website} target="_blank" rel="noopener noreferrer">
-                      Visit Official Site
-                    </Link>
-                  </Button>
-                </div>
-              ) : null}
             </div>
           </div>
         </section>
