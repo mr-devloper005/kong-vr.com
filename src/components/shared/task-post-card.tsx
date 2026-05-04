@@ -27,7 +27,7 @@ const getExcerpt = (value?: string | null, maxLength = 140) => {
   const text = stripHtml(value)
   if (!text) return ''
   if (text.length <= maxLength) return text
-  return `${text.slice(0, maxLength).trimEnd()}…`
+  return `${text.slice(0, maxLength).trimEnd()}...`
 }
 
 const getContent = (post: SitePost): ListingContent => {
@@ -178,6 +178,68 @@ export function TaskPostCard({
           <h3 className={`mt-3 line-clamp-2 text-lg font-semibold leading-snug group-hover:opacity-85 ${visualVariant.title}`}>{post.title}</h3>
           <p className={`mt-2 line-clamp-3 text-sm leading-7 ${visualVariant.muted}`}>{getExcerpt(content.description || post.summary, compact ? 120 : 180) || 'Explore this bookmark.'}</p>
           {content.email ? <div className={`mt-3 inline-flex items-center gap-1 text-xs ${visualVariant.muted}`}><Mail className="h-3.5 w-3.5" />{content.email}</div> : null}
+        </div>
+      </Link>
+    )
+  }
+
+  if (variant === 'image') {
+    return (
+      <Link href={href} className="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-[#d0dae4] bg-white shadow-[0_24px_70px_rgba(14,35,54,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(14,35,54,0.14)]">
+        <div className="relative aspect-[4/4.8] overflow-hidden bg-[#d9e4ef]">
+          <ContentImage src={image} alt={altText} fill sizes={imageSizes} quality={75} className="object-cover transition-transform duration-500 group-hover:scale-[1.05]" intrinsicWidth={960} intrinsicHeight={1200} />
+          <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
+            <span className="inline-flex items-center gap-1 rounded-full bg-white/92 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#11263f] shadow-sm">
+              <Tag className="h-3.5 w-3.5" />
+              {category}
+            </span>
+            <span className="rounded-full border border-white/50 bg-[#11263f]/70 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-sm">
+              Gallery
+            </span>
+          </div>
+          <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-[#091525]/82 via-[#091525]/24 to-transparent" />
+        </div>
+        <div className="flex flex-1 flex-col p-5">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#667b8c]">Featured visual post</p>
+          <h3 className="mt-3 line-clamp-2 text-[1.35rem] font-semibold leading-snug text-[#15232e]">{post.title}</h3>
+          <p className="mt-3 line-clamp-3 text-sm leading-7 text-[#536573]">{getExcerpt(content.description || post.summary, 165) || 'Explore this visual story.'}</p>
+          <div className="mt-auto flex flex-wrap items-center gap-3 pt-5 text-xs text-[#627788]">
+            {content.location ? <span className="inline-flex items-center gap-1"><MapPin className="h-3.5 w-3.5" />{content.location}</span> : null}
+            {content.email ? <span className="inline-flex items-center gap-1"><Mail className="h-3.5 w-3.5" />{content.email}</span> : null}
+          </div>
+        </div>
+      </Link>
+    )
+  }
+
+  if (variant === 'profile') {
+    const initial = post.title.slice(0, 1).toUpperCase()
+    const showAvatarImage = image && !image.includes('placeholder.svg')
+
+    return (
+      <Link href={href} className="group flex h-full flex-col overflow-hidden rounded-[2rem] border border-[#d0dae4] bg-[linear-gradient(180deg,#fbfdff_0%,#ffffff_100%)] shadow-[0_24px_70px_rgba(14,35,54,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(14,35,54,0.14)]">
+        <div className="relative h-28 border-b border-[#dce5ed] bg-[radial-gradient(circle_at_top_left,rgba(43,130,199,0.28),transparent_32%),linear-gradient(135deg,#11263f_0%,#244e73_100%)]">
+          <div className="absolute left-5 top-full flex h-16 w-16 -translate-y-1/2 items-center justify-center overflow-hidden rounded-full border-4 border-white bg-[#dce9f4] text-xl font-semibold text-[#11263f] shadow-sm">
+            {showAvatarImage ? (
+              <ContentImage src={image} alt={altText} fill sizes="64px" className="object-cover" intrinsicWidth={128} intrinsicHeight={128} />
+            ) : (
+              <span>{initial}</span>
+            )}
+          </div>
+        </div>
+        <div className="flex flex-1 flex-col p-5 pt-11">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-[#667b8c]">{category}</p>
+              <h3 className="mt-2 line-clamp-2 text-[1.3rem] font-semibold leading-snug text-[#15232e]">{post.title}</h3>
+            </div>
+            <ArrowUpRight className="mt-1 h-5 w-5 shrink-0 text-[#6c7f8d]" />
+          </div>
+          <p className="mt-3 line-clamp-3 text-sm leading-7 text-[#536573]">{getExcerpt(content.description || post.summary, 160) || 'Explore this featured profile.'}</p>
+          <div className="mt-auto flex flex-wrap items-center gap-3 pt-5 text-xs text-[#627788]">
+            {content.location ? <span className="inline-flex items-center gap-1"><MapPin className="h-3.5 w-3.5" />{content.location}</span> : null}
+            {content.email ? <span className="inline-flex items-center gap-1"><Mail className="h-3.5 w-3.5" />{content.email}</span> : null}
+          </div>
         </div>
       </Link>
     )

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { Folder, ArrowLeft } from 'lucide-react'
@@ -11,7 +11,6 @@ import { BookmarkCard } from '@/components/sbm/bookmark-card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
-import { mockBookmarkCollections } from '@/data/mock-data'
 import type { BookmarkCollection } from '@/types'
 import { loadFromStorage, saveToStorage, storageKeys } from '@/lib/local-storage'
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
@@ -20,20 +19,13 @@ import { useToast } from '@/components/ui/use-toast'
 export default function BookmarkCollectionDetailPage() {
   const params = useParams()
   const id = params?.id as string
-  const [storedCollections, setStoredCollections] = useState<BookmarkCollection[]>([])
+  const [collections, setCollections] = useState<BookmarkCollection[]>([])
   const [confirmDelete, setConfirmDelete] = useState(false)
   const { toast } = useToast()
-  const collection = useMemo(() => {
-    const map = new Map<string, BookmarkCollection>()
-    storedCollections.forEach((item) => map.set(item.id, item))
-    mockBookmarkCollections.forEach((item) => {
-      if (!map.has(item.id)) map.set(item.id, item)
-    })
-    return map.get(id)
-  }, [id, storedCollections])
+  const collection = collections.find((item) => item.id === id)
 
   useEffect(() => {
-    setStoredCollections(loadFromStorage<BookmarkCollection[]>(storageKeys.bookmarkCollections, []))
+    setCollections(loadFromStorage<BookmarkCollection[]>(storageKeys.bookmarkCollections, []))
   }, [])
 
   if (!collection) {
@@ -136,9 +128,9 @@ export default function BookmarkCollectionDetailPage() {
             <Button
               variant="destructive"
               onClick={() => {
-                const next = storedCollections.filter((item) => item.id !== collection.id)
+                const next = collections.filter((item) => item.id !== collection.id)
                 saveToStorage(storageKeys.bookmarkCollections, next)
-                setStoredCollections(next)
+                setCollections(next)
                 setConfirmDelete(false)
                 toast({ title: 'Collection deleted', description: 'The collection was removed.' })
               }}

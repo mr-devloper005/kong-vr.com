@@ -2,8 +2,19 @@
 
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react'
 import type { User } from '@/types'
-import { currentUser } from '@/data/mock-data'
 import { loadFromStorage, saveToStorage, storageKeys } from '@/lib/local-storage'
+
+const defaultUser: User = {
+  id: '',
+  name: '',
+  email: '',
+  avatar: '',
+  bio: '',
+  joinedDate: '',
+  followers: 0,
+  following: 0,
+  isVerified: false,
+}
 
 interface AuthContextType {
   user: User | null
@@ -34,7 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       year: 'numeric',
     })
     return {
-      ...currentUser,
+      ...defaultUser,
       id: `user-${Date.now()}`,
       joinedDate,
       followers: 0,
@@ -56,7 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         ? storedUser
         : buildUser({
             email,
-            name: email.split('@')[0]?.replace(/[^a-zA-Z0-9]/g, '') || currentUser.name,
+            name: email.split('@')[0]?.replace(/[^a-zA-Z0-9]/g, '') || defaultUser.name,
           })
       setUser(nextUser)
       saveToStorage(storageKeys.user, nextUser)

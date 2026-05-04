@@ -8,7 +8,6 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/use-toast'
-import { mockClassifiedAds } from '@/data/mock-data'
 import { loadFromStorage, saveToStorage, storageKeys } from '@/lib/local-storage'
 import type { ClassifiedAd } from '@/types'
 import { useAuth } from '@/lib/auth-context'
@@ -18,10 +17,10 @@ export default function DashboardAdEditPage({ params }: { params: Promise<{ id: 
   const { toast } = useToast()
   const { user } = useAuth()
   const [saved, setSaved] = useState(false)
-  const [storedAds, setStoredAds] = useState<ClassifiedAd[]>([])
+  const [ads, setAds] = useState<ClassifiedAd[]>([])
   const ad = useMemo(
-    () => [...storedAds, ...mockClassifiedAds].find((item) => item.id === resolvedParams.id),
-    [resolvedParams.id, storedAds]
+    () => ads.find((item) => item.id === resolvedParams.id),
+    [resolvedParams.id, ads]
   )
   const canEdit = ad ? (ad.id.startsWith('user-') || (user && ad.seller.id === user.id)) : false
   const [title, setTitle] = useState('')
@@ -29,7 +28,7 @@ export default function DashboardAdEditPage({ params }: { params: Promise<{ id: 
   const [description, setDescription] = useState('')
 
   useEffect(() => {
-    setStoredAds(loadFromStorage<ClassifiedAd[]>(storageKeys.ads, []))
+    setAds(loadFromStorage<ClassifiedAd[]>(storageKeys.ads, []))
   }, [])
 
   useEffect(() => {
@@ -87,7 +86,7 @@ export default function DashboardAdEditPage({ params }: { params: Promise<{ id: 
                 ? current.map((item) => (item.id === ad.id ? updated : item))
                 : [updated, ...current]
               saveToStorage(storageKeys.ads, next)
-              setStoredAds(next)
+              setAds(next)
               setSaved(true)
               toast({ title: 'Ad updated', description: 'Your changes were saved.' })
             }}

@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { buildPostUrl, fetchTaskPostBySlug, fetchTaskPosts } from "@/lib/task-data";
 import { SITE_CONFIG, getTaskConfig, type TaskKey } from "@/lib/site-config";
 import type { SitePost } from "@/lib/site-connector";
-import { TaskImageCarousel } from "@/components/tasks/task-image-carousel";
 import { cn } from "@/lib/utils";
 import { ArticleComments } from "@/components/tasks/article-comments";
 import { SchemaJsonLd } from "@/components/seo/schema-jsonld";
@@ -143,9 +142,15 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
   const content = getContent(post);
   const isClassified = task === "classified";
   const isArticle = task === "article";
+  const isImage = task === "image";
   const category = content.category || post.tags?.[0] || taskConfig?.label || task;
+  const detailText =
+    (typeof content.body === "string" && content.body.trim()) ||
+    content.description ||
+    post.summary ||
+    "Details coming soon.";
   const description = content.description || post.summary || "Details coming soon.";
-  const descriptionHtml = !isArticle ? formatRichHtml(description, "Details coming soon.") : "";
+  const descriptionHtml = !isArticle ? formatRichHtml(detailText, "Details coming soon.") : "";
   const articleHtml = isArticle ? formatArticleHtml(content, post) : "";
   const articleSummary =
     post.summary ||
@@ -167,7 +172,7 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
   const images = getImageUrls(post, content);
   const mapEmbedUrl = buildMapEmbedUrl(content.latitude, content.longitude, location);
   const isBookmark = task === "sbm" || task === "social";
-  const hideSidebar = isClassified || isArticle || task === "image" || isBookmark;
+  const hideSidebar = isClassified || isArticle || isImage || isBookmark;
   const related = (await fetchTaskPosts(task, 6))
     .filter((item) => item.slug !== post.slug)
     .filter((item) => {
@@ -256,7 +261,7 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
           href={taskConfig?.route || "/"}
           className="mb-6 inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
         >
-          ← Back to {taskConfig?.label || "posts"}
+          Back to {taskConfig?.label || "posts"}
         </Link>
 
         <div
@@ -310,28 +315,115 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
 
             {!isArticle ? (
               <>
-                {!isBookmark ? (
-                  <div className={cn(isClassified ? "w-full" : "")}>
-                    <TaskImageCarousel images={images} />
-                  </div>
-                ) : null}
+                {isImage ? (
+                  <section className="overflow-hidden rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#fffdfb_0%,#ffffff_100%)] shadow-[0_28px_80px_rgba(15,23,42,0.08)]">
+                    <div className="grid gap-0 xl:grid-cols-[1.45fr_0.85fr]">
+                      <div className="border-b border-slate-200 xl:border-b-0 xl:border-r">
+                        {/* Gallery grid - all images displayed */}
+                        <div className="grid grid-cols-2 gap-1 p-1">
+                          {images.map((img, idx) => (
+                            <div 
+                              key={idx} 
+                              className={cn(
+                                "relative overflow-hidden",
+                                idx === 0 ? "col-span-2 aspect-[16/9]" : "aspect-square"
+                              )}
+                            >
+                              <ContentImage
+                                src={img}
+                                alt={`${post.title} - image ${idx + 1}`}
+                                fill
+                                className="object-cover transition-transform duration-500 hover:scale-105"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="flex flex-col gap-6 p-6 sm:p-8">
+                        <div>
+                          <div className="flex flex-wrap items-center gap-3 text-sm text-slate-600">
+                            <Badge className="rounded-full bg-[#11263f] px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-white hover:bg-[#11263f]">
+                              <Tag className="h-3.5 w-3.5" />
+                              {category}
+                            </Badge>
+                            {location ? (
+                              <span className="inline-flex items-center gap-1">
+                                <MapPin className="h-4 w-4" />
+                                {location}
+                              </span>
+                            ) : null}
+                          </div>
+                          <h1 className="mt-5 text-3xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-4xl">
+                            {post.title}
+                          </h1>
+                          <p className="mt-4 text-sm uppercase tracking-[0.24em] text-slate-500">
+                            Editorial gallery profile
+                          </p>
+                        </div>
 
-                <div className={cn(isClassified ? "mx-auto w-full max-w-4xl" : "mt-6")}>
-                  <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                    <Badge variant="secondary" className="inline-flex items-center gap-1">
-                      <Tag className="h-3.5 w-3.5" />
-                      {category}
-                    </Badge>
-                    {location && (
-                      <span className="inline-flex items-center gap-1">
-                        <MapPin className="h-4 w-4" />
-                        {location}
-                      </span>
-                    )}
-                  </div>
-                  <h1 className="mt-4 text-3xl font-semibold text-foreground">{post.title}</h1>
-                  <RichContent html={descriptionHtml} className="mt-3 max-w-3xl" />
-                </div>
+                        <RichContent html={descriptionHtml} className="max-w-none text-slate-700" />
+
+                        <div className="flex flex-wrap gap-3">
+                          {content.website ? (
+                            <Button asChild className="rounded-full bg-slate-950 px-6 hover:bg-slate-800">
+                              <a href={content.website} target="_blank" rel="noreferrer">
+                                Visit project
+                              </a>
+                            </Button>
+                          ) : null}
+                          {content.email ? (
+                            <Button asChild variant="outline" className="rounded-full px-6">
+                              <a href={`mailto:${content.email}`}>Contact creator</a>
+                            </Button>
+                          ) : null}
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                ) : (
+                  <>
+                    {!isBookmark ? (
+                      <div className={cn(isClassified ? "w-full" : "")}>
+                        {/* Gallery - all images displayed */}
+                        <div className="grid grid-cols-2 gap-2">
+                          {images.map((img, idx) => (
+                            <div 
+                              key={idx} 
+                              className={cn(
+                                "relative overflow-hidden rounded-xl",
+                                idx === 0 ? "col-span-2 aspect-[16/9]" : "aspect-square"
+                              )}
+                            >
+                              <ContentImage
+                                src={img}
+                                alt={`Image ${idx + 1}`}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : null}
+
+                    <div className={cn(isClassified ? "mx-auto w-full max-w-4xl" : "mt-6")}>
+                      <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                        <Badge variant="secondary" className="inline-flex items-center gap-1">
+                          <Tag className="h-3.5 w-3.5" />
+                          {category}
+                        </Badge>
+                        {location && (
+                          <span className="inline-flex items-center gap-1">
+                            <MapPin className="h-4 w-4" />
+                            {location}
+                          </span>
+                        )}
+                      </div>
+                      <h1 className="mt-4 text-3xl font-semibold text-foreground">{post.title}</h1>
+                      <RichContent html={descriptionHtml} className="mt-3 max-w-3xl" />
+                    </div>
+                  </>
+                )}
               </>
             ) : null}
 
@@ -384,7 +476,7 @@ export async function TaskDetailPage({ task, slug }: { task: TaskKey; slug: stri
                 <h2 className="text-lg font-semibold text-foreground">Highlights</h2>
                 <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
                   {content.highlights.map((item) => (
-                    <li key={item}>• {item}</li>
+                    <li key={item}>- {item}</li>
                   ))}
                 </ul>
               </div>
