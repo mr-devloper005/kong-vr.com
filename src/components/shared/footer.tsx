@@ -22,7 +22,6 @@ const footerLinks = {
   ],
   resources: [
     { name: 'Search', href: '/search' },
-    { name: 'Status', href: '/status' },
   ],
   legal: [
     { name: 'Privacy', href: '/privacy' },
@@ -71,7 +70,7 @@ export function Footer() {
         <section className="mt-12 grid gap-10 lg:grid-cols-[1.15fr_0.95fr_0.9fr_0.9fr_0.9fr]">
           <div>
             <Link href="/" className="flex items-center gap-3">
-              <div className="h-12 w-12 overflow-hidden rounded-2xl border border-white/15 bg-white/5 p-1.5">
+              <div className="h-12 w-12 overflow-hidden border border-white/15 bg-white/5 p-1.5">
                 <img src="/favicon.png?v=20260401" alt={`${SITE_CONFIG.name} logo`} width="44" height="44" className="h-full w-full object-contain" />
               </div>
               <div>
@@ -129,14 +128,7 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-            <div className="mt-6 flex gap-2">
-              {socialLinks.map((item) => (
-                <Link key={item.name} href={item.href} target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/15 bg-white/5 p-2.5 text-slate-300 hover:bg-white/10 hover:text-white">
-                  <item.icon className="h-4 w-4" />
-                </Link>
-              ))}
-            </div>
-          </div>
+                      </div>
         </section>
 
         <div className="mt-10 border-t border-white/10 pt-6 text-sm text-slate-400">
