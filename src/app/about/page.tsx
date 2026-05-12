@@ -58,26 +58,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-          <div className="grid gap-6 md:grid-cols-3">
-            <article className="rounded-[1.4rem] border border-[#cfdeea] bg-white p-6">
-              <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-[#607384]">Creators</h2>
-              <p className="mt-3 text-4xl font-semibold tracking-[-0.04em]">12k+</p>
-              <p className="mt-2 text-sm text-[#536573]">Active image and video publishers</p>
-            </article>
-            <article className="rounded-[1.4rem] border border-[#cfdeea] bg-white p-6">
-              <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-[#607384]">Media Uploaded</h2>
-              <p className="mt-3 text-4xl font-semibold tracking-[-0.04em]">2.4M+</p>
-              <p className="mt-2 text-sm text-[#536573]">Photos, reels, and curated albums</p>
-            </article>
-            <article className="rounded-[1.4rem] border border-[#cfdeea] bg-white p-6">
-              <h2 className="text-sm font-semibold uppercase tracking-[0.22em] text-[#607384]">Monthly Reach</h2>
-              <p className="mt-3 text-4xl font-semibold tracking-[-0.04em]">980k</p>
-              <p className="mt-2 text-sm text-[#536573]">Visual views across creator pages</p>
-            </article>
-          </div>
-        </section>
-
+        
         <section className="bg-white">
           <div className="mx-auto grid max-w-7xl gap-8 px-4 py-16 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8">
             <div className="rounded-[1.8rem] border border-[#d6e2ec] bg-[#f7fbff] p-7">
