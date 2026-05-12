@@ -1,75 +1,56 @@
-import { Clock3, Mail, MapPin, MessageSquare, Phone, ShieldCheck } from 'lucide-react'
-import { NavbarShell } from '@/components/shared/navbar-shell'
-import { Footer } from '@/components/shared/footer'
-import { SITE_CONFIG } from '@/lib/site-config'
+import { Mail, MessageSquareText, ShieldCheck } from 'lucide-react';
 
-const contactEmail =
-  process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() ||
-  `support@${SITE_CONFIG.domain.replace(/^www\./, '')}`
+import { ContactLeadForm } from '@/components/shared/contact-lead-form';
+import { Footer } from '@/components/shared/footer';
+import { NavbarShell } from '@/components/shared/navbar-shell';
 
-const supportLanes = [
-  {
-    title: 'Creator onboarding',
-    description: 'Need help setting up albums, profile visuals, or publishing flow? Start here.',
-    icon: MessageSquare,
-  },
-  {
-    title: 'Technical assistance',
-    description: 'Upload issues, media rendering questions, and workspace troubleshooting.',
-    icon: ShieldCheck,
-  },
-  {
-    title: 'Partnership and media',
-    description: 'Campaign collaborations, featured creator requests, and publishing partnerships.',
-    icon: Mail,
-  },
-]
+const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Kong Vr';
 
+const contactHighlights = [
+  { icon: Mail, title: 'Direct response', copy: 'Your message is saved securely and routed to the right team.' },
+  { icon: MessageSquareText, title: 'Clear details', copy: 'Share your requirement, question, or collaboration idea in one place.' },
+  { icon: ShieldCheck, title: 'Reliable follow-up', copy: 'We keep the request record so every conversation stays traceable.' },
+];
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen bg-[#ecf2f7] text-[#15232e]">
+    <div className="min-h-screen bg-[#f7f1e8] text-stone-950">
       <NavbarShell />
-      <main className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <section className="grid gap-8 lg:grid-cols-[1.02fr_0.98fr]">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-[#627788]">Contact Us</p>
-            <h1 className="mt-4 text-5xl font-semibold tracking-[-0.05em]">Let's get your media project moving</h1>
-            <p className="mt-5 max-w-2xl text-sm leading-8 text-[#506271]">
-              Tell us what you are trying to create on {SITE_CONFIG.name}. We'll route your request to the right support lane and reply with clear next steps.
-            </p>
-            <div className="mt-8 grid gap-4">
-              {supportLanes.map((lane) => (
-                <article key={lane.title} className="rounded-[1.3rem] border border-[#d0deea] bg-white p-5">
-                  <lane.icon className="h-5 w-5 text-[#2a82c6]" />
-                  <h2 className="mt-3 text-xl font-semibold">{lane.title}</h2>
-                  <p className="mt-2 text-sm text-[#536573]">{lane.description}</p>
-                </article>
-              ))}
-            </div>
-          </div>
+      <main>
+        <section className="relative overflow-hidden px-6 py-20 md:px-10 lg:px-16">
+          <div className="absolute left-[-10%] top-10 h-72 w-72 rounded-full bg-amber-200/40 blur-3xl" />
+          <div className="absolute bottom-0 right-[-8%] h-80 w-80 rounded-full bg-stone-300/50 blur-3xl" />
 
-          <div className="space-y-5">
-            <form className="rounded-[1.8rem] border border-[#cdddea] bg-white p-7 shadow-[0_22px_55px_rgba(14,35,54,0.08)]">
-              <h2 className="text-2xl font-semibold">Send us a message</h2>
-              <p className="mt-2 text-sm text-[#5a6d7a]">We usually respond within one business day.</p>
-              <div className="mt-6 grid gap-4">
-                <input className="h-12 rounded-xl border border-[#d0deea] bg-[#f8fbff] px-4 text-sm outline-none transition focus:border-[#85adcf]" placeholder="Your name" />
-                <input className="h-12 rounded-xl border border-[#d0deea] bg-[#f8fbff] px-4 text-sm outline-none transition focus:border-[#85adcf]" placeholder="Email address" />
-                <input className="h-12 rounded-xl border border-[#d0deea] bg-[#f8fbff] px-4 text-sm outline-none transition focus:border-[#85adcf]" placeholder="Subject" />
-                <textarea className="min-h-[160px] rounded-2xl border border-[#d0deea] bg-[#f8fbff] px-4 py-3 text-sm outline-none transition focus:border-[#85adcf]" placeholder="Share your message..." />
-                <div className="flex flex-wrap gap-3">
-                  <button type="submit" className="inline-flex h-12 items-center justify-center rounded-full bg-[#143c5d] px-6 text-sm font-semibold text-white hover:bg-[#0f314d]">
-                    Send Message
-                  </button>
-                </div>
+          <div className="relative mx-auto grid max-w-6xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+            <div>
+              <p className="text-sm font-black uppercase tracking-[0.35em] text-stone-500">Contact</p>
+              <h1 className="mt-5 max-w-3xl text-5xl font-black leading-[0.95] tracking-[-0.06em] text-stone-950 md:text-7xl">
+                Let&apos;s talk about your next move.
+              </h1>
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-stone-700">
+                Use this form to reach {siteName}. Your request will be recorded and shared with the support team for follow-up.
+              </p>
+
+              <div className="mt-8 grid gap-4">
+                {contactHighlights.map((item) => (
+                  <div key={item.title} className="flex gap-4 rounded-3xl border border-stone-200 bg-white/60 p-5 shadow-sm">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-stone-950 text-white">
+                      <item.icon className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h2 className="text-base font-black text-stone-950">{item.title}</h2>
+                      <p className="mt-1 text-sm leading-6 text-stone-600">{item.copy}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </form>
+            </div>
 
-                      </div>
+            <ContactLeadForm />
+          </div>
         </section>
       </main>
       <Footer />
     </div>
-  )
+  );
 }
