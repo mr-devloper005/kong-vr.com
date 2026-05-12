@@ -25,12 +25,6 @@ const supportLanes = [
   },
 ]
 
-const contactCards = [
-  { label: 'Support Email', value: contactEmail, icon: Mail },
-  { label: 'Phone', value: '+1 (800) 555-0193', icon: Phone },
-  { label: 'Location', value: 'Creator Support Desk, Global Remote Team', icon: MapPin },
-  { label: 'Hours', value: 'Mon - Fri, 09:00 AM to 07:00 PM', icon: Clock3 },
-]
 
 export default function ContactPage() {
   return (
@@ -68,26 +62,11 @@ export default function ContactPage() {
                   <button type="submit" className="inline-flex h-12 items-center justify-center rounded-full bg-[#143c5d] px-6 text-sm font-semibold text-white hover:bg-[#0f314d]">
                     Send Message
                   </button>
-                  <a
-                    href={`mailto:${contactEmail}`}
-                    className="inline-flex h-12 items-center justify-center rounded-full border border-[#c8d8e5] bg-[#f7fbff] px-6 text-sm font-semibold text-[#143c5d] hover:bg-[#eef6ff]"
-                  >
-                    Email Us
-                  </a>
                 </div>
               </div>
             </form>
 
-            <div className="grid gap-3 sm:grid-cols-2">
-              {contactCards.map((card) => (
-                <article key={card.label} className="rounded-xl border border-[#cfdcea] bg-[#f4f9ff] p-4">
-                  <card.icon className="h-4 w-4 text-[#2a82c6]" />
-                  <p className="mt-2 text-xs font-semibold uppercase tracking-[0.2em] text-[#627788]">{card.label}</p>
-                  <p className="mt-1 text-sm font-medium text-[#223441]">{card.value}</p>
-                </article>
-              ))}
-            </div>
-          </div>
+                      </div>
         </section>
       </main>
       <Footer />
